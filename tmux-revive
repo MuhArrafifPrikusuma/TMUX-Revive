@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+SAVE_FILE="$HOME/.tmux_layout.txt"
+[[ ! -f $SAVE_FILE ]] && exit 0
+
+# start tmux server without any window
+tmux start-server
+
+while IFS='|' read -r session_name window_name pane_index pane_dir window_layout; do
+  
+  if ! tmux has-session -t "$session_name" 2>/dev/null; then
+    tmux new-session -d -s "$session_name" -n "$window_name" -c "$pane_dir"
+    continue 
+  fi
+
+  if ! tmux select-window -t "${session_name}:${window_name}" 2>/dev/null; then
+    tmux new-window -d -t "$session_name" -n "$window_name" -c "$pane_dir"
+  fi
+
+  tmux select-layout -t "${session_name}:${window_name}" "$window_layout"
+
+done < "$SAVE_FILE"

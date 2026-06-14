@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+while true; do
+  if pgrep -x "tmux" > /dev/null;then
+    ~/.local/bin/tmux-save
+  fi
+sleep 350
+done

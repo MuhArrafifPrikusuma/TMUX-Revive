@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+SAVE_FILE="$HOME/.tmux_layout.txt"
+
+/usr/bin/tmux list-panes -a -F "#{session_name}|#{window_name}|#{pane_index}|#{pane_current_path}|#{window_layout}" > "$SAVE_FILE" 2>/dev/null
